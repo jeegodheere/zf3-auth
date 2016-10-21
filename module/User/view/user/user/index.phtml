@@ -1,0 +1,39 @@
+<h1>Users list</h1>
+
+<?php
+
+?>
+<table class="table">
+    <tr class="">
+        <th>Name</th>
+        <th>phone</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Registered</th>
+    </tr>
+
+
+<?php
+
+foreach ($users as $user):
+    $fname = $user['first_name'];
+    $lname = $user['last_name'];
+    $userLink = $fname.'-'.$lname;
+
+    ?>
+    <tr>
+        <td>
+            <a href="<?= $this->url('user', ['action' => 'profile', 'id' => $userLink]) ?>">
+                <?= ucfirst($fname).' '.ucfirst($lname) ?>
+            </a>
+        </td>
+        <td><?= $user['phone'] ?></td>
+        <td><?= $user['email'] ?></td>
+        <td><?= $user['role'] ?></td>
+        <td><?= $user['created'] ?></td>
+    </tr>
+<?php
+endforeach;
+
+?>
+</table>

@@ -1,0 +1,34 @@
+
+
+<?php
+
+//foreach ($post as $p) {
+    /** \Blog\Model\Post $p */
+    ?>
+    <h1 class="text-success"><?= $this->escapeHtml($post->title) ?></h1>
+
+
+<p><?= $this->escapeHtml($post->body) ?></p>
+<p class="text-info">
+    Was created on :: <?= $this->escapeHtml($post->created_at) ?>
+    by <strong><?= ucfirst($post->first_name).' '.ucfirst($post->last_name); ?></strong></p>
+
+<?php
+if(count($post->name) > 0){
+    print 'Tags:: ';
+    foreach ($post->name as $key => $item) {
+        $count = count($item);
+        for($i = 0; $i < $count; $i++){
+            $url = $this->url('blog', ['action' => 'tag', 'id' => $item[$i]['name']]);
+            print "<a href='$url'>".$item[$i]['name']."</a>";
+            if($i < $count -1 ){
+                print ' | ';
+            }
+        }
+    }
+}
+//}
+
+
+
+

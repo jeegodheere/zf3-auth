@@ -1,0 +1,113 @@
+<?= $this->doctype() ?>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <?= $this->headTitle('ZF Skeleton Application')->setSeparator(' - ')->setAutoEscape(false) ?>
+
+        <?= $this->headMeta()
+            ->appendName('viewport', 'width=device-width, initial-scale=1.0')
+            ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
+        ?>
+
+        <!-- Le styles -->
+        <?= $this->headLink(['rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'])
+                        ->prependStylesheet($this->basePath('css/style.css'))
+                        ->prependStylesheet($this->basePath('css/bootstrap-theme.min.css'))
+                        ->prependStylesheet($this->basePath('css/bootstrap.min.css'))
+        ?>
+
+        <!-- Scripts -->
+        <?= $this->headScript()
+            ->prependFile($this->basePath('js/bootstrap.min.js'))
+            ->prependFile($this->basePath('js/jquery-2.2.4.min.js'))
+        ?>
+    </head>
+    <body>
+    <?php
+    $logged = $this->identity();
+
+    ?>
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="<?php echo $this->url('home') ?>">
+                        <img src="<?= $this->basePath('img/zf-logo.png') ?>" alt="Zend Framework <?= \Application\Module::VERSION ?>"/>&nbsp;Skeleton Application
+                    </a>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <?php
+                    $navigation = $this->navigation('navigation')
+                    ->menu()
+                    ->setMinDepth(0)
+                    ->setMaxDepth(0)
+                    ->setUlClass('nav navbar-nav');
+
+                    echo $navigation;
+                    ?>
+                    <div >
+
+                        <div id='login-box' style="position: absolute; right: 25px; line-height: normal; margin: 15px auto; color: white;">
+
+                            <?php
+                            $loginUrl = $this->url('user', ['action'=>'login']);
+                            $userFullName = ucfirst($logged->first_name).' '.ucfirst($logged->last_name);
+                            $logoutUrl = $this->url('user', ['action'=>'logout']);
+                            $userUrl = $this->url('user', ['action' => 'profile', 'id'=> $logged->first_name.'-'.$logged->last_name]);
+                            if($logged != null){
+                                echo "<a style='padding-right:20px;' href='".$userUrl."'>".$userFullName.' '."</a>";
+                                echo "<a href='".$logoutUrl."'>Logout</a>";
+                            } else {
+                                echo '<a href="'.$this->url('user', ['action' => 'login']).'">';
+                                  echo 'Login';
+                                echo '</a>';
+                            }
+                            ?>
+
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </nav>
+
+
+        <div class="container">
+            <?php
+            $namespaces = ['error', 'success', 'info', 'default'];
+            foreach ($namespaces as $namespace){
+                $flashMessages = $this->flashmessenger()->render($namespace);
+                if(!empty($flashMessages)){ ?>
+                    <div id="myAlert" class="alert alert-<?= $namespace ?>" data-alert="alert">
+                        <a class="close" data-dismiss="alert">x</a>
+                        <?= $flashMessages ?>
+                    </div>
+                    <?php
+                }
+            }
+            ?>
+            <?= $this->navigation('navigation')
+                ->breadcrumbs()
+                ->setMinDepth(0)
+                ->setPartial('partial/breadcrumb') ?>
+
+            <?= $this->content; ?>
+
+            <hr>
+
+            <?= $this->navigation('navigation-example')
+                ->menu() ?>
+            <footer>
+                <p>&copy; 2005 - <?= date('Y') ?> by Zend Technologies Ltd. All rights reserved.</p>
+            </footer>
+        </div>
+        <?= $this->inlineScript() ?>
+    </body>
+</html>

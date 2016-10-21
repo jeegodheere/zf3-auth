@@ -1,0 +1,34 @@
+<?php
+$title = 'All blog posts';
+
+$this->headTitle($title);
+
+/** @var \Blog\Model\Post $post */
+foreach ($posts as $post) : ?>
+
+    <h1>
+        <a href="<?= $this->url('blog',
+            ['action' => 'post', 'id' => $post['slug']]) ?>">
+            <?= $this->escapeHtml($post['title']) ?>
+        </a>
+    </h1>
+    <p><?= $this->escapeHtml($post['body']) ?></p>
+    <p class="text-info">Was created on :: <?= $this->escapeHtml($post['created_at']) ?> by <strong><?= ucfirst($post['first_name']).' '.ucfirst($post['last_name']) ?></strong></p>
+    <?php
+    $count = count($post['name']);
+    if(!empty($post['name'])){
+        print 'Tags:: ';
+        if(is_array($post['name']) && $count > 0 ){
+            foreach ($post['name'] as $key => $item) {
+                print $item['name'];
+                if ($key < count($post['name']) - 1) {
+                    echo ' | ';
+                }
+            }
+        } else {
+            print $post['name'];
+        }
+    }
+    ?>
+<?php endforeach; ?>
+

@@ -1,0 +1,38 @@
+<?php
+$title = 'All blog posts';
+
+$this->headTitle($title);
+
+/** @var \Blog\Model\Post $post */
+foreach ($posts as $post) : ?>
+
+    <h1>
+        <a href="<?= $this->url('blog',
+            ['action' => 'post', 'id' => $post['slug']]) ?>">
+            <?= $this->escapeHtml($post['title']) ?>
+        </a>
+    </h1>
+    <p><?= $this->escapeHtml($post['body']) ?></p>
+    <p class="text-info">
+        Was created on ::<?= $this->escapeHtml($post['created_at']) ?>
+        by <strong>
+            <a href="<?= $this->url('user', ['action' => 'profile', 'id' => $post['author']]) ?>">
+                <?= ucfirst($post['first_name']).' '.ucfirst($post['last_name']) ?>
+            </a>
+        </strong>
+    </p>
+    <?php
+    $count = count($post['name']);
+    if(count($post['name']) > 0){
+        print 'Tags:: ';
+        foreach ($post['name'] as $key => $item) {
+            $url = $this->url('blog', ['action' => 'tag', 'id' => $item['name']]);
+            echo "<a href=\"$url\">".$item['name']."</a>";
+            if ($key < count($post['name']) - 1) {
+                echo ' | ';
+            }
+        }
+    }
+    ?>
+<?php endforeach; ?>
+

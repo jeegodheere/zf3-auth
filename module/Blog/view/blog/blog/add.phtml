@@ -1,0 +1,44 @@
+<h1>Add a blog post</h1>
+
+<?php
+/** @var \Zend\Form\Form $form*/
+$form = $this->form;
+//$form->setAttribute('action', $this->url('blog', array('action' => 'add', 'id' => $id)));
+//$this->headTitle('Add a blog post');
+
+$this->form->prepare();
+
+echo $this->form()->openTag($form);
+?>
+<fieldset>
+    <?php
+    foreach($this->form as $element){
+        if(! $element instanceof Zend\Form\Element\Submit){
+            ?>
+            <div class="control-group">
+                <label class="control-label" for="<?= $element->getName() ?>"><?= $this->escapeHtml($element->getLabel()) ?></label>
+                <div class="controls">
+                    <?= $this->formElement($element) ?>
+                    <?= $this->formElementErrors($element) ?>
+                </div>
+            </div>
+
+            <?php
+        } else {
+            $element->setAttribute('class', 'btn btn-primary');
+
+            ?>
+            <div class="form-actions">
+                <?= $this->formElement($element) ?>
+            </div>
+
+            <?php
+        }
+
+    }
+    ?>
+
+</fieldset>
+<?php
+echo $this->form()->closeTag();
+?>
